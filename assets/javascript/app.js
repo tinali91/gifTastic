@@ -2,6 +2,7 @@ var heroes = ["Captain America", "Iron Man", "Batman", "Superman", "Wonder Woman
 
 //making buttons with each hero in the array
 function heroButtons() {
+    $("#hero-buttons").empty();
     for (var i = 0; i < heroes.length; i++) {
         var heroButton = $("<button>");
         heroButton.text(heroes[i]);
@@ -15,7 +16,19 @@ function heroButtons() {
 
 heroButtons();
 
-$("button").on("click",function() {
+$("#submit-hero").on("click", function() {
+    event.preventDefault();
+    var newHero = $("#addHeroButton").val().trim();
+    if (heroes.indexOf(newHero) <= 0) {
+        heroes.push(newHero);
+        heroButtons();
+    } else {
+        alert("That hero's already there, try a new one!")
+    }
+});
+
+$(".button-info").on("click", function() {
+// $("button").on("click",function() {
     $("#hero-gifs").empty();
     var hero = $(this).attr("data-hero");
 
@@ -25,18 +38,33 @@ $("button").on("click",function() {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response);
-
         var results = response.data;
+        console.log(results);
 
         for (var j = 0; j < results.length; j++) {
             var rating = results[j].rating;
             var p = $("<p>").text("Rating: " + rating);
             var heroImage = $("<img>");
-            heroImage.attr("src", results[j].images.fixed_height.url);;
+            heroImage.attr("src", results[j].images.fixed_height.url);
+            heroImage.attr("data-still", results[j].images.fixed_height_still.url);
+            heroImage.attr("data-animate", results[j].images.fixed_height.url);
+            heroImage.attr("data-state", "animate");
+            heroImage.addClass("gif");
             // heroImage.prepend(p);
             $("#hero-gifs").append(p);
             $("#hero-gifs").append(heroImage);
         }
     })
+});
+
+$(document).on("click",".gif", function() {
+    var state = $(this).attr("data-state");
+    console.log(state);
+    if(state === "animate") {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    } else {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    }
 })
