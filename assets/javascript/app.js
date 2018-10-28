@@ -6,7 +6,7 @@ function heroButtons() {
     for (var i = 0; i < heroes.length; i++) {
         var heroButton = $("<button>");
         heroButton.text(heroes[i]);
-        heroButton.addClass("button-info");
+        heroButton.addClass("btn-info btn");
         // heroButton.attr("type", button);
         heroButton.attr("data-hero", heroes[i]);
         
@@ -16,6 +16,7 @@ function heroButtons() {
 
 heroButtons();
 
+//adding a new hero to the array and populating it on the page
 $("#submit-hero").on("click", function() {
     event.preventDefault();
     var newHero = $("#addHeroButton").val().trim();
@@ -27,7 +28,8 @@ $("#submit-hero").on("click", function() {
     }
 });
 
-$(".button-info").on("click", function() {
+//adding gifs to the page when the hero buttons are clicked
+$(document).on("click", ".btn-info", function() {
 // $("button").on("click",function() {
     $("#hero-gifs").empty();
     var hero = $(this).attr("data-hero");
@@ -43,6 +45,7 @@ $(".button-info").on("click", function() {
 
         for (var j = 0; j < results.length; j++) {
             var rating = results[j].rating;
+            var newDiv = $("<div>");
             var p = $("<p>").text("Rating: " + rating);
             var heroImage = $("<img>");
             heroImage.attr("src", results[j].images.fixed_height.url);
@@ -50,9 +53,14 @@ $(".button-info").on("click", function() {
             heroImage.attr("data-animate", results[j].images.fixed_height.url);
             heroImage.attr("data-state", "animate");
             heroImage.addClass("gif");
-            // heroImage.prepend(p);
-            $("#hero-gifs").append(p);
-            $("#hero-gifs").append(heroImage);
+            
+            newDiv.addClass("column");
+            newDiv.append(p);
+            newDiv.append(heroImage);
+
+            $("#hero-gifs").append(newDiv);
+            // $("#hero-gifs").append(p);
+            // $("#hero-gifs").append(heroImage);
         }
     })
 });

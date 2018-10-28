@@ -1,0 +1,21 @@
+.column {
+    float: left;
+    padding: 5px;
+}
+
+.btn {
+    margin: 2px;
+}
+
+body {
+    background-color:#444;
+}
+
+.jumbotron {
+    background-image: url(../images/Superheroes.jpg);
+    background-size: 100%;
+}
+
+.lead {
+    color: #fff;
+}
